@@ -9,30 +9,50 @@
 	<script>
 
 		window.onload = function () {
-			var canvas = document.querySelector('canvas');
-			canvas.width = window.innerWidth;
+			// selecting my canvas - better add "id" to canvas element and fetch based on "id".
+			var canvas = document.querySelector('canvas'); 
+			// setting up canvas to fit to whole view
+			canvas.width = window.innerWidth; 
 			canvas.height = window.innerHeight;
+			// Getting a 2D context - this defines the context for our drawing
 			var circleCtx = canvas.getContext('2d');
+			// my random color list for the circles
 			var colorArray = ["red", "blue", "grey", "yellow", "green"];
+			// initialize the mouse pointer positions as undefined
 			var mouse = { x: undefined, y: undefined };
 
+			// Listener to detect mouse move events
 			window.addEventListener("mousemove", function (event) {
 				mouse.x = event.x;
 				mouse.y = event.y;
 			})
+
+			/**
+			 * Creates a Circle object.
+			 * x, y = current grid position
+			 * dx, dy = change in grid position
+			 * r - radius
+			 * color - color  
+			 */
 			function Circle(x, y, dx, dy, r, color) {
 				this.x = x, this.y = y, this.dx = dx, this.dy = dy, this.r = r;
 
+				// Draw a circle
 				this.draw = function () {
-					circleCtx.beginPath();
-					circleCtx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+					// Setup the draw path
+					circleCtx.beginPath(); 
+					// Circle is defined with positions and radius
+					circleCtx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false); 
 					circleCtx.strokeStyle = color;
 					circleCtx.fillStyle = color;
 					circleCtx.fill();
+					// Stroke will finally draw on canvas
 					circleCtx.stroke();
 				}
 
+				// Animation effects for the circle object
 				this.animate = function () {
+					// Change directions when borders are hit
 					if (this.x - this.r <= 0 || this.x + this.r >= window.innerWidth) {
 						this.dx = -this.dx;
 					} else if (this.y - this.r <= 0 || this.y + this.r >= window.innerHeight) {
@@ -40,6 +60,7 @@
 					}
 					this.x = this.x + this.dx;
 					this.y = this.y + this.dy;
+					// when circle reaches a mouse area - define the behavior 
 					if (Math.abs(this.x - mouse.x) < 100 && Math.abs(this.y - mouse.y) < 100) {
 						this.r += 1;
 						// this.x = mouse.x; this.y = mouse.y; // Kumaran's blast mode
@@ -53,6 +74,7 @@
 			}
 
 			var allCircles = [];
+			// create circle objects
 			for (let index = 0; index < 50; index++) {
 				var r = 20  * Math.random();
 				var x = Math.random() * window.innerWidth;
@@ -70,8 +92,8 @@
 					circle.draw();
 				});
 			}
+			// animate circle objects
 			circleAnimate();
-			console.log("complete")
 		}
 	</script>
 </head>
