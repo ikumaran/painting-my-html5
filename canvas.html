@@ -85,6 +85,7 @@
 				allCircles.push(circleObj);
 			}
 			var circleAnimate = function () {
+				// Everytime animation frame to be called - clear the Rect and animate the circle.
 				requestAnimationFrame(circleAnimate);
 				circleCtx.clearRect(0, 0, innerWidth, innerHeight);
 				allCircles.forEach(circle => {
